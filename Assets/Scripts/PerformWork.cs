@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Diagnostics;
+using UnityEngine;
 using UnityEngine.UI;
 
 public class PerformWork : MonoBehaviour
@@ -31,14 +32,19 @@ public class PerformWork : MonoBehaviour
 
     public void DoBulkWork_Click()
     {
-        for (int i = 0; i < 10000; i++)
+        Stopwatch sw = new Stopwatch();
+        sw.Start();
+        for (int i = 0; i < 1000000; i++)
         {
             RxDispatcher.Instance.Enqueue(() =>
                 {
-                    //TextFieldToUpdate.text = "Running item " + i.ToString();
+                    if (TextFieldToUpdate != null)
+                        TextFieldToUpdate.text = i.ToString() + " item took " + sw.ElapsedMilliseconds.ToString();
                 }
             );
         }
+
+        //sw.Stop(); leave it to be killed
     }
 
     private void LongOperation(string delayText)
