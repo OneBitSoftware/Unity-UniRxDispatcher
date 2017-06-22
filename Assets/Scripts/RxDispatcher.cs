@@ -7,6 +7,7 @@ using UnityEngine;
 public class RxDispatcher
 {
     private IReactiveCollection<Action> ActionQueue = new ReactiveCollection<Action>();
+    //private IList<Action> ActionQueue = new List<Action>();
 
     private static RxDispatcher _instance;
 
@@ -21,8 +22,9 @@ public class RxDispatcher
 
                 // observe on the Add event and main thread
                 _instance.ActionQueue
+                    //.ToObservable()
                     .ObserveAdd()
-                    .ObserveOn(Scheduler.MainThread)
+                    //.ObserveOn(Scheduler.MainThread)
                     .Subscribe(action =>
                     {
                         action.Value(); // execute the function
